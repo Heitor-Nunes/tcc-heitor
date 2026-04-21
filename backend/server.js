@@ -14,14 +14,18 @@ const PORT = process.env.PORT || 5000;
 // ── Middlewares ──────────────────────────────────────────
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || origin.includes("localhost")) {
+    const allowed = [
+      process.env.CLIENT_ORIGIN,
+      "http://localhost:3000",
+      "http://localhost:3003",
+    ];
+    if (!origin || allowed.includes(origin)) {
       return callback(null, true);
     }
-    callback(new Error("CORS bloqueado"));
+    callback(new Error("CORS bloqueado: " + origin));
   },
   credentials: true,
 }));
-app.use(express.json());
 
 // ── Rotas ────────────────────────────────────────────────
 app.use("/api/auth",         authRoutes);
