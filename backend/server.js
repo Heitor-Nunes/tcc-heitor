@@ -14,12 +14,11 @@ const PORT = process.env.PORT || 5000;
 // ── Middlewares ──────────────────────────────────────────
 app.use(cors({
   origin: function (origin, callback) {
-    const allowed = [
-      process.env.CLIENT_ORIGIN,
-      "http://localhost:3000",
-      "http://localhost:3003",
-    ];
-    if (!origin || allowed.includes(origin)) {
+    if (
+      !origin ||
+      origin.includes("vercel.app") ||
+      origin.includes("localhost")
+    ) {
       return callback(null, true);
     }
     callback(new Error("CORS bloqueado: " + origin));
