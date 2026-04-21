@@ -14,10 +14,11 @@ const PORT = process.env.PORT || 5000;
 // ── Middlewares ──────────────────────────────────────────
 app.use(cors({
   origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
     if (
-      !origin ||
       origin.includes("vercel.app") ||
-      origin.includes("localhost")
+      origin.includes("localhost") ||
+      origin === process.env.CLIENT_ORIGIN
     ) {
       return callback(null, true);
     }
